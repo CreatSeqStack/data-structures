@@ -2,20 +2,25 @@ package tree;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class BinaryTree {
 
     public static void main(String[] args) {
         // 以二叉树的先序遍历的顺序构建二叉树
         LinkedList<Integer> input = new LinkedList<>(Arrays.asList(1,2,4,null,null,null,3,null,5,null,null));
-        TreeNode treeNode = createBinaryTree(input);
-
+        TreeNode root = createBinaryTree(input);
+        System.out.println("递归");
         System.out.println("\n二叉树先序遍历");
-        preOrderTraversal(treeNode);
+        preOrderTraversal(root);
         System.out.println("\n二叉树中序遍历");
-        inOrderTraversal(treeNode);
+        inOrderTraversal(root);
         System.out.println("\n二叉树后序遍历");
-        postOrderTraversal(treeNode);
+        postOrderTraversal(root);
+        System.out.println("\n非递归");
+        System.out.println("\n二叉树后序遍历");
+        postOrderTraversalNonRecursive(root);
+
     }
 
     /**
@@ -76,6 +81,34 @@ public class BinaryTree {
         }
     }
 
+    /**
+     *
+     */
+    private static void postOrderTraversalNonRecursive(TreeNode node) {
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = node;
+        // 指向前一个遍历过节点，初始值为null
+        TreeNode pre = null;
+
+        while (cur != null || !stack.isEmpty()) {
+            while (cur != null) {
+                stack.push(cur);
+                cur = cur.leftChild;
+            }
+
+            // 此时只要要访问节点，不能弹出该节点 反例（先序遍历）1,2,4,null,null,null,3,null,5,null,null
+            cur = stack.peek();
+            if (cur.rightChild != null && cur.rightChild != pre) {
+                cur = cur.rightChild;
+            } else {
+                stack.pop();
+                System.out.print(cur.data + " ");
+                pre = cur;
+                // 遍历过的节点应该赋值为null
+                cur = null;
+            }
+        }
+    }
 
     /**
      * 二叉树节点（嵌套类）
