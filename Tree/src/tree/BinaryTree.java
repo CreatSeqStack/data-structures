@@ -82,7 +82,8 @@ public class BinaryTree {
     }
 
     /**
-     *
+     * 二叉树后序非递归遍历
+     * @param node 二叉树节点
      */
     private static void postOrderTraversalNonRecursive(TreeNode node) {
         Stack<TreeNode> stack = new Stack<>();
